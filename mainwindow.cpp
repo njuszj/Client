@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_password="";
     Qclient = new QTcpSocket();
 
-    Qclient->connectToHost(QHostAddress("129.211.90.130"),1234);
+    Qclient->connectToHost(QHostAddress("129.211.90.130"),1234);//129.211.90.130
     if(!Qclient->waitForConnected(10000))
     {
         ui->textBrowser_info->append("failed to connect");
@@ -62,7 +62,7 @@ void MainWindow::recv_message(){
     QByteArray array = Qclient->readAll();
     QString recv = array;
 
-    if(QString::compare(recv,"enter-the-sign-up")==0){
+    if(QString::compare(recv,"1001:start-to-sign-up")==0){
         ui->groupBox_password->setVisible(true);
         ui->pushButton_next->setText("注册");
         //ui->pushButton_back->setVisible(true);
@@ -70,7 +70,7 @@ void MainWindow::recv_message(){
         login_state = signup;
     }
 
-    else if(QString::compare(recv,"enter-the-sign-in")==0){
+    else if(QString::compare(recv,"1002:start-to-sign-in")==0){
         ui->groupBox_password->setVisible(true);
         ui->pushButton_next->setText("登录");
         //ui->pushButton_back->setVisible(true);
@@ -78,7 +78,7 @@ void MainWindow::recv_message(){
         login_state = signin;
     }
 
-    else if(QString::compare(recv,"enter-the-chatting-room")==0){
+    else if(QString::compare(recv,"1004:successfully-enter-the-chatting-room")==0){
         ui->groupBox_login->setVisible(false);
         ui->textEdit_input->setReadOnly(false);
         ui->textBrowser_info->append("-----------------");
@@ -86,7 +86,7 @@ void MainWindow::recv_message(){
         ui->textBrowser_info->append("-----------------");
     }
 
-    else if(QString::compare(recv,"the-password-is-wrong")==0){
+    else if(QString::compare(recv,"1003:the-password-is-wrong")==0){
         ui->textBrowser_info->append("密码错误，请重新输入");
         ui->lineEdit_password->clear();
     }
